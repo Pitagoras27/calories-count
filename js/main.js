@@ -4,7 +4,13 @@ const compose = (...functions) => data =>
 const LIST = []
 
 // clousure o función compuesta para generar etiquetas html y sus atributos
-const generateHtml = tag => content => `<${tag}>${content}</${tag}>`
+const generateHtml = obj => (content = '') => {
+  const { tag, attr } = obj
+  return `
+    <${tag} ${attr ? generateAttrHtml(attr) : ' '} >
+      ${content}
+    </${tag}>`
+}
 
 const generateAttrHtml = (tag = {}) => {
   const entries = Object.entries(tag)
@@ -18,6 +24,10 @@ const generateAttrHtml = (tag = {}) => {
   }
   return atributtes.join('')
 }
+
+const createTag = tag => generateHtml(tag)
+
+console.log(createTag({ tag: 'h1', attr: { class: 'title' } })('Header!'))
 
 const description = document.querySelector('#description')
 const calories = document.querySelector('#calories')

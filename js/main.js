@@ -1,6 +1,8 @@
 const compose = (...functions) => data =>
   functions.reduceRight((value, func) => func(value), data)
 
+const LIST = []
+
 const DESCRIPTION = document.querySelector('#description')
 const CALORIES = document.querySelector('#calories')
 const CARBS = document.querySelector('#carbs')
@@ -20,7 +22,23 @@ const validateInputs = () => {
   if (DESCRIPTION.value &&
     CALORIES.value &&
     CARBS.value &&
-    PROTEIN.value) {
-    console.log('ok! next funcionality!')
-  }
+    PROTEIN.value) addItem()
 }
+
+const addItem = () => {
+  const newItem = {
+    description: DESCRIPTION.value,
+    calories: CALORIES.value,
+    carbs: CARBS.value,
+    protein: PROTEIN.value,
+  }
+  LIST.push(newItem)
+  cleanInputs()
+}
+
+const cleanInputs = () => {
+  DESCRIPTION.value = '';
+  CARBS.value = '';
+  CALORIES.value = '';
+  PROTEIN.value = '';
+};

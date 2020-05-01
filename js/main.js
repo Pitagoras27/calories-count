@@ -27,7 +27,7 @@ const generateAttrHtml = (tag = {}) => {
 
 const createTag = tag => generateHtml(tag)
 
-console.log(createTag({ tag: 'h1', attr: { class: 'title' } })('Header!'))
+// console.log(createTag({ tag: 'h1', attr: { class: 'title' } })('Header!'))
 
 const description = document.querySelector('#description')
 const calories = document.querySelector('#calories')
@@ -51,15 +51,34 @@ const validateInputs = () => {
     protein.value) addItem()
 }
 
+
+const updateTotal = () => {
+  let calories = 0
+  let carbs = 0
+  let protein = 0
+
+  LIST.forEach(item => {
+    console.log(item, 'a<<<<')
+    calories += item.calories
+    carbs += item.carbs
+    protein += item.protein
+  })
+
+  document.querySelector('#totalCalories').textContent = calories
+  document.querySelector('#totalCarbs').textContent = carbs
+  document.querySelector('#totalProteins').textContent = protein
+}
+
 const addItem = () => {
   const newItem = {
     description: description.value,
-    calories: calories.value,
-    carbs: carbs.value,
-    protein: protein.value,
+    calories: parseInt(calories.value),
+    carbs: parseInt(carbs.value),
+    protein: parseInt(protein.value),
   }
   LIST.push(newItem)
   cleanInputs()
+  updateTotal()
 }
 
 const cleanInputs = () => {

@@ -29,6 +29,14 @@ const createTag = tag => generateHtml(tag)
 
 // console.log(createTag({ tag: 'h1', attr: { class: 'title' } })('Header!'))
 
+const tableRowTag = generateHtml('tr')
+
+const tableRow = items => tableRowTag(tableCells(items))
+// const tableRow = items => compose(tableRowTag, tableCells)(items)
+
+const tableCell = generateHtml('td')
+const tableCells = item => item.map(tableCell).join('')
+
 const description = document.querySelector('#description')
 const calories = document.querySelector('#calories')
 const carbs = document.querySelector('#carbs')
@@ -51,14 +59,12 @@ const validateInputs = () => {
     protein.value) addItem()
 }
 
-
 const updateTotal = () => {
   let calories = 0
   let carbs = 0
   let protein = 0
 
   LIST.forEach(item => {
-    console.log(item, 'a<<<<')
     calories += item.calories
     carbs += item.carbs
     protein += item.protein
@@ -67,6 +73,22 @@ const updateTotal = () => {
   document.querySelector('#totalCalories').textContent = calories
   document.querySelector('#totalCarbs').textContent = carbs
   document.querySelector('#totalProteins').textContent = protein
+}
+
+const renderItems = () => {
+  document.querySelector('tbody').innerHTML = ''
+
+  LIST.map(item => {
+    const row = document.createElement('tr')
+    row.innerHTML = tableRow([
+      item.description,
+      item.calories,
+      item.carbs,
+      item.protein
+    ])
+
+    document.querySelector('tbody').appendChild(row)
+  })
 }
 
 const addItem = () => {
@@ -79,6 +101,7 @@ const addItem = () => {
   LIST.push(newItem)
   cleanInputs()
   updateTotal()
+  renderItems()
 }
 
 const cleanInputs = () => {

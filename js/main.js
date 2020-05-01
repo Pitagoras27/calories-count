@@ -3,42 +3,44 @@ const compose = (...functions) => data =>
 
 const LIST = []
 
-const DESCRIPTION = document.querySelector('#description')
-const CALORIES = document.querySelector('#calories')
-const CARBS = document.querySelector('#carbs')
-const PROTEIN = document.querySelector('#protein')
+// clousure o función compuesta
 
-DESCRIPTION.onkeypress = () => DESCRIPTION.classList.remove('is-invalid')
-CALORIES.addEventListener('keypress', () => CALORIES.classList.remove('is-invalid'))
-CARBS.onkeypress = () => CARBS.classList.remove('is-invalid')
-PROTEIN.onkeypress = () => PROTEIN.classList.remove('is-invalid')
+const description = document.querySelector('#description')
+const calories = document.querySelector('#calories')
+const carbs = document.querySelector('#carbs')
+const protein = document.querySelector('#protein')
+
+description.onkeypress = () => description.classList.remove('is-invalid')
+calories.addEventListener('keypress', () => calories.classList.remove('is-invalid'))
+carbs.onkeypress = () => carbs.classList.remove('is-invalid')
+protein.onkeypress = () => protein.classList.remove('is-invalid')
 
 const validateInputs = () => {
-  !DESCRIPTION.value ? DESCRIPTION.classList.add('is-invalid') : ''
-  !CALORIES.value ? CALORIES.classList.add('is-invalid') : ''
-  !CARBS.value ? CARBS.classList.add('is-invalid') : ''
-  !PROTEIN.value ? PROTEIN.classList.add('is-invalid') : ''
+  !description.value ? description.classList.add('is-invalid') : ''
+  !calories.value ? calories.classList.add('is-invalid') : ''
+  !carbs.value ? carbs.classList.add('is-invalid') : ''
+  !protein.value ? protein.classList.add('is-invalid') : ''
 
-  if (DESCRIPTION.value &&
-    CALORIES.value &&
-    CARBS.value &&
-    PROTEIN.value) addItem()
+  if (description.value &&
+    calories.value &&
+    carbs.value &&
+    protein.value) addItem()
 }
 
 const addItem = () => {
   const newItem = {
-    description: DESCRIPTION.value,
-    calories: CALORIES.value,
-    carbs: CARBS.value,
-    protein: PROTEIN.value,
+    description: description.value,
+    calories: calories.value,
+    carbs: carbs.value,
+    protein: protein.value,
   }
   LIST.push(newItem)
   cleanInputs()
 }
 
 const cleanInputs = () => {
-  DESCRIPTION.value = '';
-  CARBS.value = '';
-  CALORIES.value = '';
-  PROTEIN.value = '';
+  description.value = '';
+  carbs.value = '';
+  calories.value = '';
+  protein.value = '';
 };

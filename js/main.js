@@ -1,7 +1,7 @@
 const compose = (...functions) => data =>
   functions.reduceRight((value, func) => func(value), data)
 
-const LIST = []
+let LIST = []
 
 // clousure o función compuesta para generar etiquetas html y sus atributos
 const generateHtml = obj => (content = '') => {
@@ -15,7 +15,6 @@ const generateHtml = obj => (content = '') => {
 const generateAttrHtml = (tag = {}) => {
   const entries = Object.entries(tag)
   const atributtes = []
-
   for (let i = 0; i < entries.length; i++) {
     const attrs = entries[i]
     const atributte = attrs[0]
@@ -25,16 +24,23 @@ const generateAttrHtml = (tag = {}) => {
   return atributtes.join('')
 }
 
-const createTag = tag => generateHtml(tag)
+const createTag = tag => {
+  const element = (typeof tag === 'string')
+    ? generateHtml({ tag })
+    : generateHtml(tag)
+
+  return element
+}
 
 // console.log(createTag({ tag: 'h1', attr: { class: 'title' } })('Header!'))
 
-const tableRowTag = generateHtml('tr')
+const tableRowTag = createTag('tr') // generateHtml('tr')
 
 const tableRow = items => tableRowTag(tableCells(items))
 // const tableRow = items => compose(tableRowTag, tableCells)(items)
 
-const tableCell = generateHtml('td')
+const trashIcon = createTag({ tag: "i", attr: { class: "fas fa-trash-alt" } })("");
+const tableCell = createTag('td')
 const tableCells = item => item.map(tableCell).join('')
 
 const description = document.querySelector('#description')
@@ -76,19 +82,25 @@ const updateTotal = () => {
 }
 
 const renderItems = () => {
-  document.querySelector('tbody').innerHTML = ''
+  const container = document.getElementsByTagName("tbody")[0];
+  container.innerHTML = "";
+  const ROWS = LIST.map((item, index) => {
+    const {
+      calories, description,
+      carbs, protein,
+    } = item;
+    const removeButton = createTag({
+      tag: "button",
+      attr: {
+        class: "btn btn-outline-danger",
+        onclick: `removeItem(${index})`,
+      },
+    })(trashIcon);
 
-  LIST.map(item => {
-    const row = document.createElement('tr')
-    row.innerHTML = tableRow([
-      item.description,
-      item.calories,
-      item.carbs,
-      item.protein
-    ])
-
-    document.querySelector('tbody').appendChild(row)
+    return tableRow([description, calories, carbs, protein, removeButton]);
+    // document.querySelector('tbody').appendChild(row)
   })
+  container.innerHTML = ROWS.join("");
 }
 
 const addItem = () => {
@@ -103,6 +115,12 @@ const addItem = () => {
   updateTotal()
   renderItems()
 }
+
+const removeItem = (position) => {
+  LIST = LIST.filter((item, index) => position !== index);
+  updateTotal();
+  renderItems();
+};
 
 const cleanInputs = () => {
   description.value = '';

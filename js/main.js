@@ -7,17 +7,30 @@ let LIST = []
 const generateHtml = obj => (content = '') => {
   const { tag, attr } = obj
   return `
-    <${tag} ${attr ? createAttr(attr) : ' '} >
+    <${tag} ${attr ? generateAttrHtml(attr) : ' '} >
       ${content}
     </${tag}>`
 }
 
-const createAttr = (attr = {}) => Object.entries(attr)
-  .map(item => `${item[0]}="${item[1]}"`).join('')
+const generateAttrHtml = (tag = {}) => {
+  const entries = Object.entries(tag)
+  const atributtes = []
+  for (let i = 0; i < entries.length; i++) {
+    const attrs = entries[i]
+    const atributte = attrs[0]
+    const value = attrs[1]
+    atributtes.push(`${atributte}="${value}"`)
+  }
+  return atributtes.join('')
+}
 
-const createTag = tag => (typeof tag === 'string')
-  ? generateHtml({ tag })
-  : generateHtml(tag)
+const createTag = tag => {
+  const element = (typeof tag === 'string')
+    ? generateHtml({ tag })
+    : generateHtml(tag)
+
+  return element
+}
 
 // console.log(createTag({ tag: 'h1', attr: { class: 'title' } })('Header!'))
 

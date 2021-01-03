@@ -115,3 +115,7 @@ const cleanInputs = () => {
   calories.value = '';
   protein.value = '';
 };
+
+console.log('1er cambio para unificación de commits con rebase');
+console.log('2da cambio para unificación de commits con rebase');
+console.log('3er cambio para unificación de commits con rebase');
